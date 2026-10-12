@@ -1,0 +1,4 @@
+Penjelasan: Perintah SELECT ... FOR UPDATE mengunci baris barang BRG001 sampai transaksi selesai. Jika kasir pertama melakukan penjualan ketika stok masih satu unit, transaksi tersebut berhasil dan stok menjadi nol. Kasir kedua harus menunggu hingga transaksi pertama selesai. Setelah itu, trigger akan memeriksa stok terbaru dan menolak penjualan kedua melalui RAISE EXCEPTION karena stok tidak mencukupi. Dengan demikian, stok tidak akan menjadi negatif dan penjualan melebihi persediaan dapat dicegah.
+
+Apabila terjadi kesalahan, transaksi harus dibatalkan menggunakan ROLLBACK agar perubahan yang belum berhasil tidak diterapkan. Dalam implementasi aplikasi, hasil pemeriksaan stok dan penanganan kesalahan juga perlu diperhatikan. Penggunaan SELECT ... FOR UPDATE harus dilakukan dalam transaksi yang sama dengan perintah INSERT agar penguncian tetap berlaku selama proses penjualan.
+

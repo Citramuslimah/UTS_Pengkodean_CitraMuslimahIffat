@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10182f">
+  <title>Voucher Kas Keluar | Ledger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#entry" aria-label="RetailERP Finance & Ledger">
+        <span class="brand-mark" aria-hidden="true">▤</span>
+        <span class="brand-copy"><strong>RetailERP Finance &amp; Ledger</strong><small>Modul Voucher Kas Keluar (PostgreSQL / Supabase Full-Stack)</small></span>
+      </a>
+      <div class="header-actions">
+        <nav class="tabs" aria-label="Navigasi aplikasi">
+          <button class="tab is-active" type="button" data-tab="entry">Formulir Voucher</button>
+          <button class="tab" type="button" data-tab="vouchers">Daftar Voucher (<span id="voucher-count">0</span>)</button>
+          <button class="tab" type="button" data-tab="about">Arsitektur &amp; Keamanan</button>
+        </nav>
+        <span id="connection-status" class="connection"><span class="status-dot"></span><span>Mode lokal</span></span>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section id="panel-entry" class="tab-panel">
+      <div class="entry-layout">
+        <form id="voucher-form" class="form-panel" novalidate>
+          <div class="section-heading">
+            <div><h1 id="form-title">Entri Kas Keluar Baru</h1><p>Lengkapi header voucher dan rincian jurnal berpasangan sesuai standar akuntansi.</p></div>
+            <span class="branch-badge"><span aria-hidden="true">▦</span> Cabang Ritel Utama</span>
+          </div>
+          <div class="header-fields">
+            <label class="field"><span>No. Voucher</span><input id="voucher-no" name="voucher_no" autocomplete="off" required></label>
+            <label class="field"><span>Tanggal Transaksi</span><input id="tx-date" name="tx_date" type="date" required></label>
+            <label class="field field-wide"><span>Deskripsi Utama Transaksi</span><textarea id="description" name="description" rows="2" placeholder="Jelaskan peruntukan pengeluaran kas..." required></textarea></label>
+          </div>
+          <div class="journal-heading">
+            <div class="journal-title"><span class="journal-icon" aria-hidden="true">▱</span><h2>Rincian Baris Jurnal (Double-Entry)</h2></div>
+            <button id="add-row" class="button button-quiet" type="button"><span aria-hidden="true">+</span> Tambah Baris</button>
+          </div>
+          <div class="table-wrap"><table class="journal-table"><thead><tr><th scope="col">No. Akun</th><th scope="col">Nama Akun (COA)</th><th scope="col">Keterangan Baris</th><th scope="col" class="number-cell">Debit (Rp)</th><th scope="col" class="number-cell">Kredit (Rp)</th><th scope="col"><span class="sr-only">Aksi</span></th></tr></thead><tbody id="journal-rows"></tbody></table></div>
+        </form>
+        <aside class="summary-panel" aria-label="Indikator keseimbangan voucher">
+          <div class="balance-head"><h2>Indikator Keseimbangan</h2><span id="balance-badge" class="balance-badge is-unbalanced"><span id="balance-label">Not Balanced</span></span></div>
+          <div class="total-line"><span>Total Debit</span><strong id="total-debit">Rp0</strong></div>
+          <div class="total-line"><span>Total Kredit</span><strong id="total-credit">Rp0</strong></div>
+          <div id="difference-line" class="difference-line"><span>Selisih (Imbalance)</span><strong id="difference">Rp0</strong></div>
+          <div class="checks"><h3>Syarat Posting Transaksi:</h3><div class="check-item" data-check="header"><span class="check-icon">•</span><span>Header Voucher Terisi Lengkap</span></div><div class="check-item" data-check="rows"><span class="check-icon">•</span><span>Minimal 2 Baris Jurnal Valid</span></div><div class="check-item" data-check="accounts"><span class="check-icon">•</span><span>Semua Akun Perkiraan Dipilih</span></div><div class="check-item" data-check="amounts"><span class="check-icon">•</span><span>Nominal Tidak Negatif &amp; Mutual Exclusive</span></div><div class="check-item" data-check="balanced"><span class="check-icon">•</span><span>Total Debit = Total Kredit (&gt; 0)</span></div></div>
+          <div class="form-actions"><button id="post-button" class="button button-primary" type="submit" form="voucher-form" disabled><span aria-hidden="true">↗</span> Submit &amp; Post Transaksi</button><button id="draft-button" class="button button-secondary" type="button">Simpan sebagai Draft</button></div>
+          <p id="imbalance-warning" class="imbalance-warning" hidden>⚠ Jurnal belum seimbang (Not Balanced). Tombol submit diproteksi otomatis oleh sistem.</p>
+        </aside>
+      </div>
+    </section>
+    <section id="panel-vouchers" class="tab-panel" hidden>
+      <div class="list-panel"><div class="section-heading"><div><h1>Daftar Voucher Kas Keluar</h1><p>Kelola status draft dan tinjau transaksi yang sudah diposting.</p></div><span id="list-count" class="list-total">Total: 0 Transaksi</span></div><div id="voucher-list" class="record-list"></div></div>
+      <div class="list-panel audit-panel"><div class="section-heading"><div><h2>Riwayat Audit</h2><p>Jejak pembuatan, perubahan status, dan penghapusan draft.</p></div><span id="audit-count" class="list-total">0 aktivitas</span></div><div id="audit-list" class="record-list"></div></div>
+    </section>
+    <section id="panel-about" class="tab-panel" hidden>
+      <div class="list-panel architecture-panel"><p class="eyebrow">DOKUMENTASI SISTEM</p><h1>Integritas Transaksi &amp; Validasi Backend PostgreSQL</h1><p class="architecture-lead">Penjelasan pemisahan validasi antarmuka dan backend untuk menjaga standar akuntansi.</p><div class="architecture-grid"><article><span class="architecture-index">01</span><h3>Validasi Frontend</h3><p>Total debit, kredit, dan selisih dihitung langsung. Tombol posting hanya aktif jika seluruh syarat terpenuhi.</p></article><article><span class="architecture-index">02</span><h3>Validasi Backend PostgreSQL / Supabase</h3><p>Database memeriksa ulang jurnal dan menyimpan transaksi beserta barisnya secara atomik.</p></article><article><span class="architecture-index">03</span><h3>Audit Trail</h3><p>Trigger database mencatat perubahan voucher dan baris jurnal. Mode lokal menyimpan aktivitas di browser.</p></article><article><span class="architecture-index">04</span><h3>Mode Penyimpanan</h3><p>Tanpa konfigurasi Supabase, demo memakai localStorage. Isi URL dan anon key di script.js untuk memakai cloud.</p></article></div><div class="prompt-reference"><strong>Prompt Gemini Canvas</strong><span>Dokumentasi prompt tersedia di <code>prompt.md</code>.</span></div></div>
+    </section>
+    <footer class="page-footer"><span>RetailERP Finance &amp; Ledger</span><span>Zero-discrepancy · Audit trail</span></footer>
+  </main>
+</body>
+</html>
