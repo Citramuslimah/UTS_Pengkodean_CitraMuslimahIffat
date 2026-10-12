@@ -35,6 +35,8 @@
 
 **Disusun untuk memenuhi Tugas Project UTS Pengkodean dan Pemograman.**
 
+**Demo Aplikasi**: https://citramuslimah.github.io/UTS_Pengkodean_CitraMuslimahIffat/
+
 ## Deskripsi Proyek
 
 Aplikasi Voucher Kas Keluar dirancang sebagai purwarupa sistem informasi akuntansi yang membantu pengguna mencatat transaksi pengeluaran kas dan menyusun jurnal berdasarkan akun yang digunakan.
