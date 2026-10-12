@@ -83,6 +83,22 @@ Selain pengembangan antarmuka web, proyek ini mencakup rancangan basis data meng
 
 - Menjadi dasar pengembangan mekanisme koreksi transaksi melalui jurnal pembalik tanpa menghapus catatan asli.
 
+## Teknologi yang Digunakan
+
+**HTML**: Menyusun struktur halaman aplikasi.
+
+**CSS**: Mengatur tampilan, tata letak, dan responsivitas antarmuka.
+
+**JavaScript**: Mengatur interaksi pengguna, perhitungan debit-kredit, validasi, dan pengelolaan data pada sisi aplikasi.
+
+**SQL**: Mendefinisikan tabel, fungsi, trigger, validasi, dan mekanisme audit pada basis data.
+
+**Supabase**: Menyediakan layanan basis data PostgreSQL untuk penyimpanan transaksi apabila konfigurasi telah diaktifkan.
+
+**Gemini**: Membantu proses pembuatan dan penyempurnaan purwarupa aplikasi.
+
+**NotebookLM**: Membantu meninjau aturan bisnis berdasarkan sumber referensi yang diunggah.
+
 ## Penggunaan AI
 
 AI digunakan sebagai alat bantu dalam proses pengembangan dan evaluasi purwarupa, bukan sebagai pengganti verifikasi kode maupun sumber akuntansi.
