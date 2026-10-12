@@ -1,31 +1,100 @@
-# UTS Pengkodean
+# UTS Pengkodean dan Pemograman 
 
-Kumpulan berkas tugas UTS Pengkodean. Folder `Kode SQL` berisi soal basis data dan prototype web Soal 3. Folder `Prompt` menyimpan prompt AI serta log penggunaannya.
+## Identitas tugas
 
-## Soal 3: Voucher Kas Keluar
+<table>
+  <thead>
+    <tr>
+      <th align="center">Keterangan</th>
+      <th align="center">Detail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Nama</td>
+      <td>Citra Muslimah Iffat</td>
+    </tr>
+    <tr>
+      <td>NIM</td>
+      <td>12030124120054</td>
+    </tr>
+    <tr>
+      <td>Mata Kuliah</td>
+      <td>Pengkodean dan Pemograman</td>
+    </tr>
+    <tr>
+      <td>Kelas</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>Dosen Pengampu</td>
+      <td>Dr. Totok Dewayanto, S.E., M.Si., Akt.</td>
+    </tr>
+  </tbody>
+</table>
 
-Buka [halaman prototype](Kode%20SQL/Soal%203/index.html) langsung di browser. Prototype menyediakan entri jurnal dinamis, kalkulasi debit-kredit langsung, daftar voucher, edit/hapus draft, penguncian voucher POSTED, dan riwayat audit.
+**Disusun untuk memenuhi Tugas Project UTS Pengkodean dan Pemograman.**
 
-Secara default, aplikasi berjalan dalam mode demo dan menyimpan data di `localStorage` browser. Untuk menghubungkan Supabase:
+## Deskripsi Proyek
 
-1. Jalankan [skrip database](Kode%20SQL/Soal%203/database.sql) di SQL Editor proyek Supabase.
-2. Isi `SUPABASE_URL` dan `SUPABASE_ANON_KEY` pada [script.js](Kode%20SQL/Soal%203/script.js).
-3. Buka kembali `index.html` dan uji alur simpan serta daftar voucher.
+Aplikasi Voucher Kas Keluar dirancang sebagai purwarupa sistem informasi akuntansi yang membantu pengguna mencatat transaksi pengeluaran kas dan menyusun jurnal berdasarkan akun yang digunakan.
 
-Policy akses pada skrip SQL dibuat terbuka untuk kebutuhan demo kelas. Tinjau dan batasi Row Level Security sebelum memakai data nyata; jangan pernah menaruh `service_role` key di kode browser.
+Aplikasi menyediakan formulir pencatatan voucher, rincian jurnal yang dapat ditambahkan secara dinamis, serta kalkulasi total debit dan kredit secara otomatis. Sistem juga dirancang untuk mendukung validasi transaksi, pengelolaan voucher, dan pencatatan aktivitas sebagai bagian dari pengendalian internal.
 
-## Prompt dan Log AI
+Selain pengembangan antarmuka web, proyek ini mencakup rancangan basis data menggunakan SQL dan dokumentasi penggunaan AI untuk membantu proses pembuatan serta evaluasi logika bisnis aplikasi.
 
-- [Prompt Gemini Canvas](Prompt/Prompt%20Gemini.md)
-- [Prompt NotebookLM untuk tinjauan berbasis sumber](Prompt/Prompt%20NotebookLM.md)
-- [Log penggunaan AI dan status verifikasi](Prompt/Log%20AI.md)
+## Fitur Aplikasi
 
-NotebookLM harus menggunakan hanya sumber yang diunggah pengguna. Prompt yang disimpan meminta sitasi untuk temuan berbasis sumber dan melarang klaim kepatuhan PSAK tanpa bukti yang cukup.
+**1. Pencatatan Voucher Kas Keluar**
 
-## Berkas Soal 3
+- Mengisi informasi utama voucher dan keterangan transaksi.
 
-- `index.html`: antarmuka web yang dapat dibuka langsung.
-- `style.css`: gaya dan tata letak responsif.
-- `script.js`: interaksi, validasi, kalkulasi, CRUD demo, dan konfigurasi Supabase.
-- `database.sql`: tabel, fungsi transaksi, validasi database, dan audit trigger PostgreSQL.
-- `prompt.md`: dokumentasi prompt Gemini Canvas dan penyesuaian prototype.
+- Menambahkan rincian akun jurnal sesuai kebutuhan transaksi.
+
+- Memasukkan nominal debit dan kredit untuk setiap baris jurnal.
+
+**2. Perhitungan dan Validasi Jurnal**
+
+- Menghitung total debit dan kredit secara otomatis.
+
+- Menampilkan indikator keseimbangan jurnal.
+
+- Membantu memeriksa kelengkapan data sebelum transaksi disimpan.
+
+- Memvalidasi transaksi berdasarkan aturan bisnis yang diterapkan dalam aplikasi.
+
+**3. Pengelolaan Voucher**
+
+- Menampilkan daftar voucher yang telah dicatat.
+
+- Mengedit atau menghapus voucher yang masih berstatus DRAFT, sesuai aturan yang diterapkan.
+
+- Menerapkan pembatasan perubahan terhadap voucher berstatus POSTED.
+
+- Menyediakan ringkasan transaksi sebelum proses penyimpanan atau posting.
+
+**4. Jejak Audit dan Integritas Data**
+
+- Mendukung pencatatan aktivitas transaksi.
+
+- Menyediakan rancangan penguncian transaksi yang telah diposting.
+
+- Mendukung penerapan validasi dan audit trail melalui basis data PostgreSQL.
+
+- Menjadi dasar pengembangan mekanisme koreksi transaksi melalui jurnal pembalik tanpa menghapus catatan asli.
+
+## Penggunaan AI
+
+AI digunakan sebagai alat bantu dalam proses pengembangan dan evaluasi purwarupa, bukan sebagai pengganti verifikasi kode maupun sumber akuntansi.
+
+**Gemini**
+
+Digunakan untuk membantu menyusun dan mengembangkan antarmuka aplikasi, menambahkan interaksi, serta menyempurnakan logika pencatatan voucher berdasarkan kebutuhan tugas.
+
+**NotebookLM**
+
+Digunakan untuk membantu meninjau aturan bisnis aplikasi berdasarkan referensi yang diunggah. Evaluasi diarahkan pada validasi debit-kredit, pencatatan transaksi, pengendalian perubahan data, dan relevansi aturan dengan standar akuntansi yang digunakan sebagai sumber.
+
+**Dokumentasi Penggunaan AI**
+
+Prompt, hasil penggunaan, dan catatan verifikasi disimpan dalam folder Prompt/. Hasil AI tetap perlu diperiksa terhadap kode aktual, struktur basis data, dan sumber referensi. Pernyataan mengenai kesesuaian terhadap PSAK tidak dapat dianggap terbukti hanya berdasarkan keluaran AI.
